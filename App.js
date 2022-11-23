@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {NativeBaseProvider} from 'native-base';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {NavigationContainer} from '@react-navigation/native';
@@ -7,6 +7,7 @@ import TabNavigationScreen from './src/routes/TabNavigationScreen';
 import DetailDataAnime from './src/pages/detailAnime';
 import AllAnimePage from './src/pages/all-anime';
 import GenreAnimePage from './src/pages/genre-anime';
+import SplashScreen from 'react-native-splash-screen';
 const queryClient = new QueryClient();
 
 const Stack = createNativeStackNavigator();
@@ -18,6 +19,10 @@ const config = {
 };
 
 const App = () => {
+  useEffect(() => {
+    SplashScreen.hide();
+  }, []);
+
   return (
     <NativeBaseProvider config={config}>
       <QueryClientProvider client={queryClient}>
