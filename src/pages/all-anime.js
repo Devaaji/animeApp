@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Flex,
   HStack,
   Image,
@@ -20,21 +21,23 @@ const AllAnimePage = ({route, navigation}) => {
   const {
     data: allDataAnime,
     isSuccess,
+    fetchNextPage,
     isLoading,
+    isFetchingNextPage,
+    hasNextPage,
   } = useRemoteAllAnime({
     paramsUrl: urlParams,
   });
-
   return (
     <Box bg="gray.900" _text={{color: 'white'}} h="full">
-      <Box mt="4">
+      <Box>
         {isLoading && <LoadingAllAnime />}
-        {allDataAnime?.data ? (
-          <ScrollView showsVerticalScrollIndicator={true}>
-            <>
-              {isSuccess &&
-                allDataAnime?.data.map((item, index) => (
-                  <VStack key={index} mt="1">
+        <ScrollView showsVerticalScrollIndicator={true}>
+          <>
+            {isSuccess &&
+              allDataAnime?.pages?.map(page =>
+                page.data?.map((item, i) => (
+                  <VStack key={i} mt="1">
                     <Pressable
                       onPress={() =>
                         navigation.push('Detail', {
@@ -105,9 +108,9 @@ const AllAnimePage = ({route, navigation}) => {
                               showsHorizontalScrollIndicator={false}>
                               <HStack space={2} mt="1">
                                 <Text color="white">Genre :</Text>
-                                {item.genres.map((genre, i) => (
+                                {item.genres.map((genre, index) => (
                                   <Box
-                                    key={i}
+                                    key={index}
                                     bg="gray.500"
                                     px="1"
                                     rounded="md">
@@ -126,12 +129,22 @@ const AllAnimePage = ({route, navigation}) => {
                       </Flex>
                     </Pressable>
                   </VStack>
-                ))}
-            </>
-          </ScrollView>
-        ) : (
-          ''
-        )}
+                )),
+              )}
+          </>
+          <Button
+            onPress={() => fetchNextPage()}
+            disabled={!hasNextPage || isFetchingNextPage}
+            variant="none"
+            _text={{color: 'coolGray.100'}}
+            colorScheme="gray">
+            {isFetchingNextPage
+              ? 'Loading more...'
+              : hasNextPage
+              ? 'Load More'
+              : 'Nothing more to load'}
+          </Button>
+        </ScrollView>
       </Box>
     </Box>
   );

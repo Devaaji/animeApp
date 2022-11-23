@@ -3,15 +3,14 @@ import {Box, Image} from 'native-base';
 
 const HomeBanners = () => {
   return (
-    <Box bg="amber.100" h="280" mb="3">
+    <Box bg="gray.800" h="280" mb="3">
       <Image
         source={{
-          uri: 'https://img.freepik.com/premium-vector/dragon-demon-cartoon-anime-offline-banner-twitch_150972-865.jpg?w=2000',
+          uri: 'https://i.pinimg.com/originals/ab/ba/b0/abbab0891a52dac14bcdfcef3a0b964b.png',
         }}
         w="full"
         h="full"
         alt="Alternate Text"
-        resizeMode="cover"
       />
     </Box>
   );
