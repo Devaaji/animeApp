@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Materialicon from 'react-native-vector-icons/MaterialIcons';
 import {
   Avatar,
@@ -6,6 +6,7 @@ import {
   Button,
   Flex,
   HStack,
+  IconButton,
   Image,
   ScrollView,
   Text,
@@ -14,6 +15,7 @@ import {
 import LoadingDetailAnime from '../utils/Skeleton/LoadingDetailAnime';
 import useRemoteDetailAnime from '../hooks/remote/useRemoteDetailAnime';
 import useRemoteEpisodeAnime from '../hooks/remote/useRemoteEpisodeAnime';
+import useStoreAnime from '../store/useStoreAnime';
 
 const DetailDataAnime = ({route}) => {
   const {itemId} = route.params;
@@ -25,6 +27,22 @@ const DetailDataAnime = ({route}) => {
   const {data: dataGetEpisodeAnime} = useRemoteEpisodeAnime({
     id: itemId,
   });
+
+  const [isWishlist, setIsWishlist] = useState(false);
+
+  const updateCurrentFavorit = useStoreAnime(
+    state => state.updateCurrentFavorit,
+  );
+
+  const currentFavorit = useStoreAnime(state => state.currentFavorit);
+
+  useEffect(() => {
+    const animeWishlist = currentFavorit.find(wl => wl.id === itemId);
+
+    if (animeWishlist) {
+      setIsWishlist(true);
+    }
+  }, [currentFavorit, itemId]);
 
   return (
     <Box bg="gray.800" h="full">
@@ -64,9 +82,36 @@ const DetailDataAnime = ({route}) => {
               </Box>
             </Box>
             <VStack p="3">
-              <Text color="white" fontWeight="bold" fontSize="lg" mb="2">
-                {dataDetailAnime?.data.title}
-              </Text>
+              <HStack justifyContent="space-between" pr="5">
+                <Text color="white" fontWeight="bold" fontSize="lg" mb="2">
+                  {dataDetailAnime?.data.title}
+                </Text>
+                <Box>
+                  <IconButton
+                    borderRadius="full"
+                    variant="ghost"
+                    disabled={isWishlist}
+                    icon={
+                      <Materialicon
+                        name="favorite"
+                        size={25}
+                        color={isWishlist ? 'red' : 'white'}
+                      />
+                    }
+                    onPress={() => {
+                      updateCurrentFavorit({
+                        id: itemId,
+                        title: dataDetailAnime?.data.title,
+                        img: dataDetailAnime?.data.images.jpg.image_url,
+                        genres: dataDetailAnime?.data.genres,
+                        source: dataDetailAnime?.data.source,
+                        eps: dataDetailAnime?.data.episodes,
+                        duration: dataDetailAnime?.data.duration,
+                      });
+                    }}
+                  />
+                </Box>
+              </HStack>
               <HStack>
                 <ScrollView
                   horizontal={true}

@@ -6,10 +6,13 @@ import HomePage from '../pages/home';
 import SearchPage from '../pages/search';
 import AnimePages from '../pages/anime';
 import ProfilePage from '../pages/profile';
+import useStoreAnime from '../store/useStoreAnime';
 
 const Tab = createMaterialBottomTabNavigator();
 
 const TabNavigationScreen = () => {
+  const currentFavorit = useStoreAnime(state => state.currentFavorit);
+
   return (
     <Tab.Navigator barStyle={{backgroundColor: 'black'}}>
       <Tab.Screen
@@ -33,13 +36,13 @@ const TabNavigationScreen = () => {
         }}
       />
       <Tab.Screen
-        name="Anime"
+        name="Favorite"
         component={AnimePages}
         options={{
-          tabBarLabel: 'Anime',
-          tabBarBadge: 2,
+          tabBarLabel: 'Favorite',
+          tabBarBadge: currentFavorit.length,
           tabBarIcon: ({color}) => (
-            <Materialicon name="ondemand-video" color={color} size={25} />
+            <Materialicon name="favorite" color={color} size={25} />
           ),
         }}
       />

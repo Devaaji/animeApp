@@ -42,8 +42,6 @@ const SearchPage = ({navigation}) => {
       setFilter('');
     }
   }, [searchInput]);
-
-  console.log('Result', searchDataAnime);
   return (
     <Box bg="gray.900" p="2" pb="10">
       <Box h="full" p="2">

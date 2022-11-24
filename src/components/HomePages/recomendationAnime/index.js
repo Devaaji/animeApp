@@ -22,7 +22,7 @@ const RecomendationAnime = ({navigation}) => {
       <TouchableRipple
         rippleColor="rgba(138, 122, 93, 0.3)"
         onPress={() =>
-          navigation.push('AllAnime', {
+          navigation.navigate('AllAnime', {
             nameHeader: 'Season Now',
             urlParams: '/seasons/now',
           })
@@ -45,11 +45,11 @@ const RecomendationAnime = ({navigation}) => {
               {dataRecomendationAnime?.data.slice(0, 10).map((item, i) => (
                 <Box key={i} w="150" mr="2">
                   <Pressable
-                    onPress={() =>
+                    onPress={() => {
                       navigation.push('Detail', {
                         itemId: item.mal_id,
-                      })
-                    }>
+                      });
+                    }}>
                     <Box
                       overflow="hidden"
                       position="relative"
